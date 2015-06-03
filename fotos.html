@@ -1,0 +1,115 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Guía para la creación de la app - Rails Girl Córdoba 2015</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Arvo:400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/vendor.css">
+	<link rel="stylesheet" href="css/main.css">
+	
+	<link rel="shortcut icon" href="favicon.ico">
+</head>
+<body>
+	<!--[if lt IE 7]>
+        <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+    <![endif]-->
+
+     <div id="wrapper">
+
+        <!-- Sidebar -->
+
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="http://railsgirls.com/cordoba">
+                    <img src="images/railsgirls-logo.png">
+                    </a>
+                </li>
+                <li>
+                    <a href="index.html">1. Creando la aplicación web</a>
+                </li>
+                <li>
+                    <a href="estructura.html">2. Revisando la estructura del proyecto </a>
+                </li>
+                <li>
+                    <a href="#">3. Creando las fotos de la aplicación</a>
+                </li>
+
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+        			<a href="#menu-toggle" class="btn btn-default" id="menu-toggle"> &#9776;</a>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1>3. Creando las fotos de la aplicación</h1>
+
+                        <p class="grey">En esta edición de Rails Girls Córdoba 2015 crearás la aplicación web <strong>pic-home</strong>, en la que los usuarios podrán subir fotografías y comentar, “megustear” las fotografías de otros usuarios.</p>
+
+						<ul>
+							<li>
+                                Crea el modelo <strong>photo</strong> a través de la utilidad scaffold de rails:
+                                <p><code>
+                                    rails generate scaffold photo name:string description:string picture:string
+                                </code></p>
+								<ul>
+									<li>Con la utilidad <i>scaffold</i> estás creando en un solo paso la estructura de datos de tus <strong>photos</strong></li>
+									<li>Abre un navegador de internet y escribe la dirección web <strong>http://localhost:3000</strong> para ver la aplicación. Como puedes ver, por ahora tu aplicación solo tiene una página de relleno.</li>
+									<li>Siempre que quieras cerrar el servidor de rails, pulsa las teclas <strong>CTRL y C</strong> en la terminal.
+                                    </li>
+								</ul>
+							</li>
+
+							<li>
+                                Crea las tablas de la base de datos con el comando <i>rake</i>:
+                                <p><code>rake db:migrate</code></p>
+								<ul>
+									<li>
+                                        Con este comando estás creando tablas donde almacenar la información de cada <strong>photo</strong> que subas a tu aplicación web.
+                                    </li>
+								</ul>
+							</li>
+                                
+                            <li>
+                                Lanza el servidor de rails para ver tu aplicación con los cambios que has realizado:
+                                <p><code>rails server</code></p>
+                                <ul>
+                                    <li>
+                                        Si ya tenías el servidor de rails lanzado, cierralo. Para cerrar el servidor de rails pulsa las teclas <strong>CTRL y C</strong> en la terminal.
+                                    </li>
+                                    <li>
+                                        Dedica un rato a explorar las siguientes direcciones web de tu aplicación:
+                                        <ul>
+                                            <li>
+                                                http://localhost:3000/photos
+                                            </li>
+                                            <li>
+                                                http://localhost:3000/photos/new
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+						</ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+	<script src="js/vendor.js"></script>
+	<script src="js/main.js"></script>
+</body>
