@@ -59,117 +59,44 @@
             <a href="#menu-toggle" class="btn btn-default" id="menu-toggle"> &#9776;</a>
             <div class="row">
                 <div class="col-lg-12">
-                    <h1>4. Habilitando la subida de fotos</h1>
+                    <h1>6. Comentando fotos</h1>
 
-                    <p class="grey">En el paso anterior has creado todo lo necesario para almacenar fotos en tu aplicación web y visualizarlas a través de una plantilla. Pero si te das cuenta, cuando intentas crear una foto nueva a través del formulario de photos/new, ¡en el campo picture solo puedes poner texto! En este paso incluirás el mecanismo para subir fotos a través de este formulario.</p>
+                    <p class="grey">A continuación vas a agregar una funcionalidad extra a tu aplicación web, y es la de incluir comentarios a las fotos que se van subiendo. En este caso, los comentarios serán un nuevo modelo de la base de datos de tu aplicación, e irán ligados a las fotos que se vayan añadiendo.</p>
 
                     <ul>
-                        <li>Abre el fichero Gemfile y busca la siguiente línea de código...
-                            <p><code>gem ‘sqlite3’</code></p>
+                        <li>Crea el modelo comment a través de la utilidad scaffold de rails:
+                            <p><code>rails g scaffold comment text:string photo_id:integer</code></p>
+                        </li>
+                        <li>Crea las tablas de la base de datos para comment con el comando rake:
+                            <p><code>rake db:migrate</code></p>
+                        </li>
+                        <li>Abre el fichero app/models/photo.rb e incluye la siguiente linea:
+                            <p><code>has_many :comments</code></p>
+                            <ul>
+                                <li>
+                                    Con esta línea le estás indicando a rails que una foto tiene varios comentarios. Esta manera de relacionar modelos de tu base de datos permite que tengas acceso a ellos fácilmente. 
+                                </li>
+                            </ul>
+                        </li>
+                        <li>Abre el fichero app/models/comment.rb e incluye la siguiente linea:
+                            <p><code>belongs_to :photo</code></p>
+                            <ul>
+                                <li>
+                                    Con esta línea le estás indicando a rails que un comentario pertenece a una foto.
+                                </li>
+                            </ul>
+                        </li>
+                        <li>Abre el fichero app/controllers/photos_controller.rb y busca la siguiente línea de código...
+                            <p><code>def index</code></p>
                             … Y añade justo debajo la siguiente línea de código:
-                            <p><code>gem ‘carrierwave’</code></p>
+                            <p><code>@comment = Comment.new</code></p>
                             <ul>
                                 <li>
-                                    La gema carrierwave incluye un conjunto de mecanismos y facilidades para crear la funcionalidad que necesitas para subir fotos a tu aplicación web.
-                                </li>
-                                <li>
-                                    Si ya tenías el servidor de rails lanzado, cierralo. Para cerrar el servidor de rails pulsa las teclas CTRL y C en la terminal.
+                                    Con esta nueva línea estás preparando un contenedor para un nuevo comentario. Es necesario incluir esta linea para poder realizar el formulario de creación de comentarios desde la vista de foto.
                                 </li>
                             </ul>
                         </li>
-                        <li>Escribe el siguiente comando en tu terminal:
-                            <p><code>
-                                bundle install
-                            </code></p>
-                            <ul>
-                                <li>
-                                    Con este comando estás ordenando que se lea el fichero <strong>Gemfile</strong> en busca de nuevas gemas para que sean instaladas en el momento. No debería tardar mucho en completarse.
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            Ahora que tienes la gema carrierwave instalada, escribe el siguiente comando en tu terminal:
-                            <p><code>rails generate uploader Picture</code></p>
-                            <ul>
-                                <li>
-                                    Con este comando rails utilizará la gema carrierwave para crear un “uploader” que te permitirá subir fotos y almacenarlas en tu base de datos.
-                                </li>
-                            </ul>
-                        </li>
-                        <li> Abre el fichero app/models/photo.rb y busca la siguiente línea de código...
-                            <p><code>class Photo < ActiveRecord::Base</code></p>
-                            … Y añade justo debajo la siguiente línea de código:
-                            <p><code>mount_uploader :picture, PictureUploader</code></p>
-                            <ul>
-
-                                <li>
-                                    Con este paso estás definiendo en tu representación de Photo que existirá un campo especial para almacenar un fichero.
-                                </li>
-                                <li>
-                                    Ahora rails sabe que el campo picture no es una cadena de texto, si no un campo algo más complejo que permite alojar en su interior un fichero, como puede ser una foto.
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li>
-                            Abre el fichero app/views/photos/_form.html.erb y busca la siguiente línea de código...
-                            <p><code><%= form_for( @photo ) do |f| %></code></p>
-
-                            … Y reemplazala por la siguiente línea de código:
-                            <p><code><%= form_for @photo, html: { multipart: true } do |f| %></code></p>
-
-                            A continuación, busca la siguiente línea de código...
-                            <p><code><%= f.text_field :picture %></code></p>
-
-                            … Y reemplazala por la siguiente línea de código:
-                            <p><code><%= f.file_field :picture %></code></p>
-
-                            <ul>
-                                <li>
-                                    Con estos cambios estás preparando al formulario de creación de una nueva foto para que acepte ficheros en el campo picture.
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li>
-                            Abre el fichero app/views/photos/index.html.erb y busca la siguiente línea de código...
-                            <p><code>&lttd&gt <%= photo.picture %>&lt/td&gt</code></p>
-
-                            … Y reemplazala por la siguiente línea de código:
-                            <p><code>&lttd&gt<%= image_tag( photo.picture, width: “20%” ) %>&lt/td&gt</code></p>
-
-                            <ul>
-                                <li>
-                                    Con estos cambios estás preparando al listado de fotos para mostrar las imágenes correspondientes a tus fotos.
-                                </li>
-                                <li>
-                                    Dedica un rato a explorar las siguientes direcciones web de tu aplicación e intenta subir fotos a través de <strong>photos/new:</strong>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li>
-                            Lanza el servidor de rails para ver tu aplicación con los cambios que has realizado:
-                            <p><code>rails server</code></p>
-
-                            <ul>
-                                <li>
-                                    Si ya tenías el servidor de rails lanzado, cierralo. Para cerrar el servidor de rails pulsa las teclas CTRL y C en la terminal.
-                                </li>
-
-                                <ul>
-                                    <li>
-                                        http://localhost:3000/photos
-                                    </li>
-                                    <li>
-                                        http://localhost:3000/photos/new
-                                    </li>
-                                </ul>
-                            </ul>
-                        </li>
-
                     </ul>
-
                 </div>
             </div>
         </div>
