@@ -1,0 +1,180 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Guía para la creación de la app - Rails Girl Córdoba 2015</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Arvo:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/vendor.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <link rel="shortcut icon" href="favicon.ico">
+</head>
+<body>
+<!--[if lt IE 7]>
+<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+<![endif]-->
+
+<div id="wrapper">
+
+    <!-- Sidebar -->
+
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="http://railsgirls.com/cordoba">
+                    <img src="images/railsgirls-logo.png">
+                </a>
+            </li>
+            <li>
+                <a href="index.html">1. Creando la aplicación web</a>
+            </li>
+            <li>
+                <a href="estructura.html">2. Revisando la estructura del proyecto </a>
+            </li>
+            <li>
+                <a href="fotos.html">3. Creando las fotos de la aplicación</a>
+            </li>
+            <li>
+                <a href="subida.html">4. Creando las fotos de la aplicación</a>
+            </li>
+
+        </ul>
+    </div>
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <a href="#menu-toggle" class="btn btn-default" id="menu-toggle"> &#9776;</a>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>4. Habilitando la subida de fotos</h1>
+
+                    <p class="grey">En el paso anterior has creado todo lo necesario para almacenar fotos en tu aplicación web y visualizarlas a través de una plantilla. Pero si te das cuenta, cuando intentas crear una foto nueva a través del formulario de photos/new, ¡en el campo picture solo puedes poner texto! En este paso incluirás el mecanismo para subir fotos a través de este formulario.</p>
+
+                    <ul>
+                        <li>Abre el fichero Gemfile y busca la siguiente línea de código...
+                            <p><code>gem ‘sqlite3’</code></p>
+                            … Y añade justo debajo la siguiente línea de código:
+                            <p><code>gem ‘carrierwave’</code></p>
+                            <ul>
+                                <li>
+                                    La gema carrierwave incluye un conjunto de mecanismos y facilidades para crear la funcionalidad que necesitas para subir fotos a tu aplicación web.
+                                </li>
+                                <li>
+                                    Si ya tenías el servidor de rails lanzado, cierralo. Para cerrar el servidor de rails pulsa las teclas CTRL y C en la terminal.
+                                </li>
+                            </ul>
+                        </li>
+                        <li>Escribe el siguiente comando en tu terminal:
+                            <p><code>
+                                bundle install
+                            </code></p>
+                            <ul>
+                                <li>
+                                    Con este comando estás ordenando que se lea el fichero <strong>Gemfile</strong> en busca de nuevas gemas para que sean instaladas en el momento. No debería tardar mucho en completarse.
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            Ahora que tienes la gema carrierwave instalada, escribe el siguiente comando en tu terminal:
+                            <p><code>rails generate uploader Picture</code></p>
+                            <ul>
+                                <li>
+                                    Con este comando rails utilizará la gema carrierwave para crear un “uploader” que te permitirá subir fotos y almacenarlas en tu base de datos.
+                                </li>
+                            </ul>
+                        </li>
+                        <li> Abre el fichero app/models/photo.rb y busca la siguiente línea de código...
+                            <p><code>class Photo < ActiveRecord::Base</code></p>
+                            … Y añade justo debajo la siguiente línea de código:
+                            <p><code>mount_uploader :picture, PictureUploader</code></p>
+                            <ul>
+
+                                <li>
+                                    Con este paso estás definiendo en tu representación de Photo que existirá un campo especial para almacenar un fichero.
+                                </li>
+                                <li>
+                                    Ahora rails sabe que el campo picture no es una cadena de texto, si no un campo algo más complejo que permite alojar en su interior un fichero, como puede ser una foto.
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            Abre el fichero app/views/photos/_form.html.erb y busca la siguiente línea de código...
+                            <p><code><%= form_for( @photo ) do |f| %></code></p>
+
+                            … Y reemplazala por la siguiente línea de código:
+                            <p><code><%= form_for @photo, html: { multipart: true } do |f| %></code></p>
+
+                            A continuación, busca la siguiente línea de código...
+                            <p><code><%= f.text_field :picture %></code></p>
+
+                            … Y reemplazala por la siguiente línea de código:
+                            <p><code><%= f.file_field :picture %></code></p>
+
+                            <ul>
+                                <li>
+                                    Con estos cambios estás preparando al formulario de creación de una nueva foto para que acepte ficheros en el campo picture.
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            Abre el fichero app/views/photos/index.html.erb y busca la siguiente línea de código...
+                            <p><code>&lttd&gt <%= photo.picture %>&lt/td&gt</code></p>
+
+                            … Y reemplazala por la siguiente línea de código:
+                            <p><code>&lttd&gt<%= image_tag( photo.picture, width: “20%” ) %>&lt/td&gt</code></p>
+
+                            <ul>
+                                <li>
+                                    Con estos cambios estás preparando al listado de fotos para mostrar las imágenes correspondientes a tus fotos.
+                                </li>
+                                <li>
+                                    Dedica un rato a explorar las siguientes direcciones web de tu aplicación e intenta subir fotos a través de <strong>photos/new:</strong>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            Lanza el servidor de rails para ver tu aplicación con los cambios que has realizado:
+                            <p><code>rails server</code></p>
+
+                            <ul>
+                                <li>
+                                    Si ya tenías el servidor de rails lanzado, cierralo. Para cerrar el servidor de rails pulsa las teclas CTRL y C en la terminal.
+                                </li>
+
+                                <ul>
+                                    <li>
+                                        http://localhost:3000/photos
+                                    </li>
+                                    <li>
+                                        http://localhost:3000/photos/new
+                                    </li>
+                                </ul>
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+</div>
+
+<script src="js/vendor.js"></script>
+<script src="js/main.js"></script>
+</body>
+
+</html>
