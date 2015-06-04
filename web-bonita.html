@@ -53,7 +53,9 @@
             <li>
                 <a href="comentando.html">7. Comentando fotos</a>
             </li>
-
+            <li>
+                <a href="internet.html">8. Tu aplicación en internet</a>
+            </li>
         </ul>
     </div>
 
@@ -68,25 +70,26 @@
                     <p class="grey">El aspecto que tiene ahora tu aplicación web no es precisamente el mejor del mundo, ¿verdad? Hasta ahora te has ocupado de una parte esencial de tu aplicación: que funcione. Ahora toca ponerla bonita para que sea atractiva de usar. Para ello tendrás que modificar la estructura de los ficheros HTML y utilizar hojas de estilo CSS.</p>
 
                     <ul>
-                        <li>(Falta texto aqui)
-                            <p><code>rails server</code></p>
+                        <li>Copia el contenido de pichome-beauty.zip en sus carpetas correspondientes.
                             <ul>
                                 <li>
-                                    Si ya tenías el servidor de rails lanzado, cierralo. Para cerrar el servidor de rails pulsa las teclas <strong>CTRL y C</strong> en la terminal.
-                                </li>
-                                <li>
-                                    Dedica un rato a explorar las siguientes direcciones web de tu aplicación:
-                                    <ul>
-                                        <li>
-                                            http://localhost:3000/photos
-                                        </li>
-                                        <li>
-                                            http://localhost:3000/photos/new
-                                        </li>
-                                    </ul>
+                                    Revisa el contenido de cada fichero que has reemplazado para ver las cosas que han cambiado. No dudes en llamar a un mentor para que te explique todo.
                                 </li>
                             </ul>
                         </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            Abre el fichero app/controllers/photos_controller.rb y busca la siguiente línea de código...
+                            <p><code>def index</code></p>
+                            … Y añade justo debajo la siguiente línea de código:
+                            <p><code>@photo = Photo.new</code></p>
+                        </li>
+                        <ul>
+                            <li>
+                                Esta línea de código crea un contenedor para una foto nueva. Con la nueva estructura de HTML, las fotos se pueden crear desde la lista de fotos, por lo que es necesario incluir este contenedor, para alojar la foto nueva y que rails se encargue de guardarla.
+                            </li>
+                        </ul>
                     </ul>
                 </div>
             </div>

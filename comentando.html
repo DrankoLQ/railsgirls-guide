@@ -53,6 +53,9 @@
             <li>
                 <a href="comentando.html">7. Comentando fotos</a>
             </li>
+            <li>
+                <a href="internet.html">8. Tu aplicación en internet</a>
+            </li>
         </ul>
     </div>
 
@@ -69,6 +72,11 @@
                     <ul>
                         <li>Crea el modelo comment a través de la utilidad scaffold de rails:
                             <p><code>rails g scaffold comment text:string photo_id:integer</code></p>
+                            <ul>
+                                <li>
+                                    Presta atención al atributo photo_id. Necesitas que los comentarios estén relacionados con las fotos a las que pertenecen. En este atributo podrás guardar un número identificador de cada foto, con tal de establecer dicha relación.
+                                </li>
+                            </ul>
                         </li>
                         <li>Crea las tablas de la base de datos para comment con el comando rake:
                             <p><code>rake db:migrate</code></p>
@@ -90,13 +98,77 @@
                             </ul>
                         </li>
                         <li>Abre el fichero app/controllers/photos_controller.rb y busca la siguiente línea de código...
-                            <p><code>def index</code></p>
-                            … Y añade justo debajo la siguiente línea de código:
-                            <p><code>@comment = Comment.new</code></p>
+                            <p><code>def show</code></p>
+                            … Y añade justo debajo las siguientes líneas de código:
+                            <p><code>@comments = @photo.comments.all</code></p>
+                            <p><code>@comment = @photo.comments.build</code></p>
                             <ul>
                                 <li>
-                                    Con esta nueva línea estás preparando un contenedor para un nuevo comentario. Es necesario incluir esta linea para poder realizar el formulario de creación de comentarios desde la vista de foto.
+                                    Con la primera nueva línea estás recogiendo en la variable <strong>@comments</strong> todos los comentarios de la foto.
                                 </li>
+                                <li>
+                                    Con la segunda estás preparando un contenedor para un nuevo comentario. Es necesario incluir esta línea para poder realizar el formulario de creación de comentarios desde la vista de foto.
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            Abre el fichero app/controllers/comments_controller.rb y busca la siguiente línea de código...
+                            <p><code>format.html { redirect_to @comment, notice: 'Comment was successfully created.' }</p></code>
+                            … Y reemplaza por la siguiente línea de código:
+                            <p><code>format.html { redirect_to @comment.photo }</p></code>
+                            <ul>
+                                <li>
+                                    El funcionamiento por defecto al crear un comentario es llevarte a un vista individual de dicho comentario, como se indica en el comando redirect_to del primer fragmento de código. Con el cambio que has hecho le estás diciendo a rails que te lleve a la vista de la foto a la que pertenece el comentario.
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            Abre el fichero app/views/photos/show.html.erb y busca la siguiente línea de código...
+                            <p><code>&lt!-- COMMENTS --&gt</p></code>
+                            … Y reemplaza por las siguientes líneas de código:
+                            <p><code>
+                                <% @comments.each do |comment| %> <br>
+                                &ltdiv class="comment"><%= comment.text %>&lt/div> <br>
+                                <% end %> <br>
+                                <%= render "comments/form" %>
+                            </code></p>
+                            <ul>
+                                <li>
+                                    Con este fragmento de código estás visualizando todos los comentarios de tu foto en una lista. Justo después de esa vista estás incluyendo el formulario de creación de comentarios.
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            Abre el fichero app/views/comments/_form.html.erb y reemplaza todo su contenido por las siguientes líneas de código:
+                            <p><code>
+                                <%= form_for( @comment ) do |f| %> <br>
+                                <%= f.text_area :text %> <br>
+                                <%= f.hidden_field :photo_id %> <br>
+                                <%= f.submit %> <br>
+                                <% end %> <br>
+                            </p></code>
+                            <ul>
+                                <li>
+                                    Con este fragmento de código estás introduciendo el formulario para crear un comentario en la foto actual. Este formulario está compuesto por un área de texto donde incluir el comentario y un campo oculto que se rellena automáticamente con el identificador de la foto.
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            Lanza el servidor de rails para ver tu aplicación con los cambios que has realizado:
+                            <p><code>rails server</code></p>
+
+                            <ul>
+                                <li>
+                                    Si ya tenías el servidor de rails lanzado, cierralo. Para cerrar el servidor de rails pulsa las teclas CTRL y C en la terminal.
+                                </li>
+                                <li>
+                                    Dedica un rato a explorar las siguientes direcciones web de tu aplicación e intenta crear comentarios a través de <strong>photos/1:</strong>
+                                </li>
+                                <ul>
+                                    <li>
+                                        http://localhost:3000/photos/1
+                                    </li>
+                                </ul>
                             </ul>
                         </li>
                     </ul>

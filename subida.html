@@ -53,7 +53,9 @@
             <li>
                 <a href="comentando.html">7. Comentando fotos</a>
             </li>
-
+            <li>
+                <a href="internet.html">8. Tu aplicación en internet</a>
+            </li>
         </ul>
     </div>
 
@@ -119,13 +121,13 @@
                             Abre el fichero app/views/photos/_form.html.erb y busca la siguiente línea de código...
                             <p><code><%= form_for( @photo ) do |f| %></code></p>
 
-                            … Y reemplazala por la siguiente línea de código:
+                            … Y <u>reemplazala</u> por la siguiente línea de código:
                             <p><code><%= form_for @photo, html: { multipart: true } do |f| %></code></p>
 
                             A continuación, busca la siguiente línea de código...
                             <p><code><%= f.text_field :picture %></code></p>
 
-                            … Y reemplazala por la siguiente línea de código:
+                            … Y <u>reemplazala</u> por la siguiente línea de código:
                             <p><code><%= f.file_field :picture %></code></p>
 
                             <ul>
@@ -139,15 +141,12 @@
                             Abre el fichero app/views/photos/index.html.erb y busca la siguiente línea de código...
                             <p><code>&lttd&gt <%= photo.picture %>&lt/td&gt</code></p>
 
-                            … Y reemplazala por la siguiente línea de código:
+                            … Y <u>reemplazala</u> por la siguiente línea de código:
                             <p><code>&lttd&gt<%= image_tag( photo.picture, width: “20%” ) %>&lt/td&gt</code></p>
 
                             <ul>
                                 <li>
                                     Con estos cambios estás preparando al listado de fotos para mostrar las imágenes correspondientes a tus fotos.
-                                </li>
-                                <li>
-                                    Dedica un rato a explorar las siguientes direcciones web de tu aplicación e intenta subir fotos a través de <strong>photos/new:</strong>
                                 </li>
                             </ul>
                         </li>
@@ -160,7 +159,9 @@
                                 <li>
                                     Si ya tenías el servidor de rails lanzado, cierralo. Para cerrar el servidor de rails pulsa las teclas CTRL y C en la terminal.
                                 </li>
-
+                                <li>
+                                    Dedica un rato a explorar las siguientes direcciones web de tu aplicación e intenta subir fotos a través de <strong>photos/new:</strong>
+                                </li>
                                 <ul>
                                     <li>
                                         http://localhost:3000/photos
